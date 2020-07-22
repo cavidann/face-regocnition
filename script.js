@@ -61,7 +61,7 @@ async function startVideo() {
 
 
 function loadLabeledImages() {
-  const labels = ['Cavidan Talibov', 'Narmina Talibova']
+  const labels = ['cavid']
   return Promise.all(
     labels.map(async label => {
       const descriptions = []
@@ -69,8 +69,11 @@ function loadLabeledImages() {
         const img = await faceapi.fetchImage(`${label}/${i}.jpg`)
         console.log(img);
         
-        const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
-        descriptions.push(detections.descriptor)
+        const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
+        
+        if(detections){
+          descriptions.push(detections.descriptor)
+        }
       }
 
       return new faceapi.LabeledFaceDescriptors(label, descriptions)
